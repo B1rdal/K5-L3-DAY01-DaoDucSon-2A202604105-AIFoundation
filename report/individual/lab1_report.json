@@ -3,35 +3,43 @@
  "predictions": {
   "ml_f1": {
    "text": "0.95",
-   "time": "13:26:06"
+   "time": "09:18:20"
   },
   "ml_lr": {
    "text": "lr=0.001 thì giảm loss chậm, lr=50 thì sẽ giao động ",
-   "time": "13:35:11"
+   "time": "09:18:29"
   },
   "dl_curve": {
    "text": "val loss giảm rồi tăng do quá khớp. MLP có thể đạt F1 cao hơn logistic regression ",
-   "time": "14:19:54"
+   "time": "09:19:03"
   },
   "dl_relu": {
    "text": "Bỏ ReLU khiến mô hình tương đương logistic regression. F1 có thể giảm vì mạng không còn học được quan hệ phi tuyến.",
-   "time": "14:31:34"
+   "time": "09:19:13"
   },
   "emb_search": {
    "text": "Kết quả gần nhất có thể là spam vì câu truy vấn mang ý nghĩa quảng cáo và yêu cầu nhận phần thưởng, dù không chứa các từ spam quen thuộc.",
-   "time": "14:37:53"
+   "time": "09:22:07"
   },
   "emb_tricky": {
    "text": "Encoder + LogReg có thể dự đoán đúng nhiều hơn vì hiểu được ngữ nghĩa và ngữ cảnh của tin nhắn, thay vì chỉ dựa vào từ khóa như bag of words.",
-   "time": "14:41:13"
+   "time": "09:23:05"
   },
   "llm_models": {
    "text": "Model lớn có thể có F1 cao hơn khoảng 0.05, nhưng chậm hơn 2–3 lần. LLM có thể không tốt bằng mô hình embedding 3b.",
-   "time": "15:01:39"
+   "time": "09:25:23"
   },
   "llm_fewshot": {
    "text": "F1 có thể tăng nhẹ nhờ 4 ví dụ mẫu, nhưng chi phí mỗi tin nhắn cũng tăng khoảng 20–30% vì prompt dài hơn.",
-   "time": "15:02:23"
+   "time": "09:48:45"
+  },
+  "tradeoff": {
+   "text": "LogReg và Encoder + LogReg có thể nằm trên đường Pareto vì cân bằng tốt giữa F1 và tốc độ.",
+   "time": "10:25:37"
+  },
+  "hard_eval": {
+   "text": "các phương pháp có latency thấp thường sẽ có F1 thấp hơn. Đường Pareto sẽ gồm những phương pháp có sự cân bằng tốt giữa tốc độ và độ chính xác. Các phương pháp có latency trên 50 ms sẽ không đạt SLA.",
+   "time": "10:28:07"
   }
  },
  "checks": {
@@ -44,62 +52,72 @@
   "3.1–3.2 cosine / top_k_similar": true,
   "3.3 knn_predict": true,
   "4.2–4.3 prompt / parse_label": true,
-  "4.1 + 4.4 call_openai / llm_classify_batch": true
+  "4.1 + 4.4 call_openai / llm_classify_batch": true,
+  "tính tay: baseline_accuracy": true,
+  "tính tay: sigmoid_0": true,
+  "tính tay: f1_example": true,
+  "tính tay: cosine_example": true,
+  "tính tay: llm_cost_per_day": true
  },
  "experiments": [
   {
    "key": "ml_f1",
-   "time": "13:26:10"
+   "time": "09:18:21"
   },
   {
    "key": "ml_lr",
-   "time": "13:35:12"
+   "time": "09:18:29"
   },
   {
    "key": "dl_curve",
-   "time": "14:19:55"
+   "time": "09:19:03"
   },
   {
    "key": "dl_relu",
-   "time": "14:31:37"
+   "time": "09:19:13"
   },
   {
    "key": "emb_search",
-   "time": "14:37:55"
+   "time": "09:22:07"
   },
   {
    "key": "emb_tricky",
-   "time": "14:41:14"
+   "time": "09:23:05"
   },
   {
    "key": "llm_models",
-   "time": "15:01:40"
+   "time": "09:25:23"
+  },
+  {
+   "key": "llm_models",
+   "time": "09:28:50"
+  },
+  {
+   "key": "llm_models",
+   "time": "09:31:39"
+  },
+  {
+   "key": "llm_models",
+   "time": "09:33:24"
   },
   {
    "key": "llm_fewshot",
-   "time": "15:02:24"
+   "time": "09:48:47"
   },
   {
-   "key": "llm_fewshot",
-   "time": "15:04:49"
+   "key": "tradeoff",
+   "time": "10:25:38"
   },
   {
-   "key": "llm_models",
-   "time": "15:08:11"
+   "key": "hard_eval",
+   "time": "10:28:10"
   },
   {
-   "key": "llm_models",
-   "time": "15:39:20"
-  },
-  {
-   "key": "llm_models",
-   "time": "16:09:27"
-  },
-  {
-   "key": "llm_models",
-   "time": "16:10:12"
+   "key": "hard_eval",
+   "time": "10:33:23"
   }
  ],
+ "challenge": 5,
  "results": {
   "1. BoW + LogReg (tự code)": {
    "accuracy": 0.984516129032258,
@@ -107,10 +125,10 @@
    "recall": 0.8571428571428571,
    "f1": 0.923076923076923,
    "f1_SUB": 0.9743589743589743,
-   "train_s": 2.561696505001237,
-   "msg_per_s": 55267.096962337666,
-   "p50_ms": 0.03187999936926644,
-   "p95_ms": 0.043340000138414284,
+   "train_s": 7.280523365999983,
+   "msg_per_s": 20807.368310640348,
+   "p50_ms": 0.06261300001142445,
+   "p95_ms": 0.10574600000126104,
    "usd_per_1k": 0.0
   },
   "2. BoW + MLP (deep learning)": {
@@ -119,10 +137,10 @@
    "recall": 0.9523809523809523,
    "f1": 0.963855421686747,
    "f1_SUB": 1.0,
-   "train_s": 4.693920630999855,
-   "msg_per_s": 50248.12850194366,
-   "p50_ms": 0.20364500051073264,
-   "p95_ms": 0.2519690003282448,
+   "train_s": 9.035257720999994,
+   "msg_per_s": 25466.650911321554,
+   "p50_ms": 0.260378000007222,
+   "p95_ms": 0.29681329998822986,
    "usd_per_1k": 0.0
   },
   "3a. Encoder (MiniLM) + kNN": {
@@ -131,10 +149,10 @@
    "recall": 0.9761904761904762,
    "f1": 0.9318181818181818,
    "f1_SUB": 1.0,
-   "train_s": 55.717421047000244,
-   "msg_per_s": 74.11920083310142,
-   "p50_ms": 24.38774399979593,
-   "p95_ms": 31.382484050391213,
+   "train_s": 89.42114843500002,
+   "msg_per_s": 41.62284052778901,
+   "p50_ms": 38.602910000008706,
+   "p95_ms": 55.63579050002828,
    "usd_per_1k": 0.0
   },
   "3b. Encoder (MiniLM) + LogReg": {
@@ -143,10 +161,10 @@
    "recall": 0.9761904761904762,
    "f1": 0.9761904761904762,
    "f1_SUB": 1.0,
-   "train_s": 55.9067859020015,
-   "msg_per_s": 82.7427680544603,
-   "p50_ms": 19.42280399998708,
-   "p95_ms": 27.123461048540772,
+   "train_s": 89.80346351399999,
+   "msg_per_s": 48.61281777036517,
+   "p50_ms": 25.45505599997,
+   "p95_ms": 34.84431414995299,
    "usd_per_1k": 0.0
   },
   "3c. Encoder (MiniLM) + MLP head": {
@@ -155,23 +173,47 @@
    "recall": 0.9761904761904762,
    "f1": 0.9820359281437125,
    "f1_SUB": 1.0,
-   "train_s": 56.39094774899968,
-   "msg_per_s": 80.74230393573626,
-   "p50_ms": 20.69513499918685,
-   "p95_ms": 27.30119649986591,
+   "train_s": 90.30311552500007,
+   "msg_per_s": 43.88428001316174,
+   "p50_ms": 25.036954999961836,
+   "p95_ms": 37.22828214995954,
    "usd_per_1k": 0.0
   },
   "4a. LLM nhỏ zero-shot": {
+   "accuracy": 0.9,
+   "precision": 0.8,
+   "recall": 1.0,
+   "f1": 0.888888888888889,
+   "f1_SUB": 0.888888888888889,
+   "train_s": 0.0,
+   "msg_per_s": 1.6366801229547059,
+   "p50_ms": 606.2124720000384,
+   "p95_ms": 698.3438562998912,
+   "usd_per_1k": 0.01705333333333333
+  },
+  "4b. LLM lớn zero-shot": {
+   "accuracy": 1.0,
+   "precision": 1.0,
+   "recall": 1.0,
+   "f1": 1.0,
+   "f1_SUB": 1.0,
+   "train_s": 0.0,
+   "msg_per_s": 0.019130988034662712,
+   "p50_ms": 53420.847210500026,
+   "p95_ms": 99950.14183424998,
+   "usd_per_1k": 0.03930000000000001
+  },
+  "4c. LLM nhỏ few-shot": {
    "accuracy": 0.975,
    "precision": 0.9523809523809523,
    "recall": 1.0,
    "f1": 0.975609756097561,
    "f1_SUB": 0.975609756097561,
    "train_s": 0.0,
-   "msg_per_s": 1.603415115649578,
-   "p50_ms": 635.5113845002052,
-   "p95_ms": 827.2409010487535,
-   "usd_per_1k": 0.017633333333333338
+   "msg_per_s": 0.4582676677119436,
+   "p50_ms": 1792.2648044998368,
+   "p95_ms": 5827.951685449959,
+   "usd_per_1k": 0.04883333333333335
   }
  }
 }
